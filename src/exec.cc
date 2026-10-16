@@ -21,6 +21,7 @@
 #include <sys/wait.h>
 
 #include <cstdint>
+#include <limits>
 #include <string_view>
 #include <unordered_map>
 #include <utility>
@@ -41,6 +42,7 @@ namespace {
 
 const double kNotExist = -2.0;
 const double kProcessing = -1.0;
+const double kJustMade = std::numeric_limits<double>::infinity();
 
 class Executor {
  public:
@@ -122,8 +124,12 @@ class Executor {
       }
     }
 
-    done_[n.output] = output_ts;
-    return output_ts;
+    double made_ts = GetTimestamp(n.output.c_str());
+    if (g_flags.is_dry_run || made_ts == kNotExist) {
+      made_ts = kJustMade;
+    }
+    done_[n.output] = made_ts;
+    return made_ts;
   }
 
   uint64_t Count() { return num_commands_; }
