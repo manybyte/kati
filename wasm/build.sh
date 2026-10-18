@@ -37,6 +37,6 @@ em++ -O2 $OBJS -o "$OUT/kati.mjs" \
   -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=1048576 \
   -sSTACK_SIZE=4194304 -sALLOW_MEMORY_GROWTH=1 \
   -sFORCE_FILESYSTEM=1 -lnodefs.js \
-  -sEXPORTED_RUNTIME_METHODS=callMain,FS,NODEFS
+  -sEXPORTED_RUNTIME_METHODS=callMain,FS,NODEFS,ENV
 cp "$HERE/kati-run.mjs" "$OUT/kati-run.mjs"
 echo "built $OUT/kati.mjs $OUT/kati.wasm"

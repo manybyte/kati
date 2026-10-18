@@ -3,6 +3,7 @@
 //   runKati({
 //     args: ["all"],                 // kati command line (no argv[0])
 //     cwd: "/work",                  // directory kati runs in
+//     env: {NAME: "value"},          // environment, seen as $(NAME)
 //     mount(FS, NODEFS) { ... },     // host puts its files under the kati FS
 //     runCommand({cmd, cwd, shell, shellflag, stderr}) -> {status, output},
 //     print(line), printErr(line),   // kati's own stdout / stderr
@@ -27,6 +28,7 @@ export async function runKati(opts) {
   });
   let module = await createKati({
     noInitialRun: true,
+    preRun: [(module) => { Object.assign(module.ENV, opts.env || {}); }],
     runCommand: opts.runCommand,
     print: opts.print || ((line) => console.log(line)),
     printErr: opts.printErr || ((line) => console.error(line)),
